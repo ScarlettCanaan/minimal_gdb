@@ -1,8 +1,25 @@
-python
 
 # GDB dashboard - Modular visual interface for GDB in Python.
 #
 # https://github.com/cyrus-and/gdb-dashboard
+
+
+
+
+
+define syncbp
+    delete
+    set breakpoint pending on
+    shell /home/meixihua/.vim/bundle/minimal_gdb/python/mingdb.py -e
+    source /home/meixihua/.vim/bundle/minimal_gdb/dbg_data/breakpoints.gdb
+    set breakpoint pending off
+end
+
+syncbp
+
+python
+
+
 
 import ast
 import fcntl
@@ -14,6 +31,8 @@ import traceback
 
 # Common attributes ------------------------------------------------------------
 
+
+#ding yi le lei R 
 class R():
 
     @staticmethod
@@ -124,6 +143,7 @@ which `{pid}` is expanded with the process identifier of the target program.""",
         }
 
 # Common -----------------------------------------------------------------------
+#quan ju han shu 
 
 def run(command):
     return gdb.execute(command, to_string=True)
@@ -780,6 +800,15 @@ class Source(Dashboard.Module):
         # reload the source file if changed
         file_name = sal.symtab.fullname()
         ts = None
+        #add by meixihua  
+        print(file_name)
+        print(current_line)
+        file_to_tem = open('/tmp/test_for_mei', 'w')
+        #file_to_tem.write('file name is :')
+        file_to_tem.write(file_name + '\n')
+        file_to_tem.write(str(current_line) + '\n')
+        file_to_tem.close()
+
         try:
             ts = os.path.getmtime(file_name)
         except:
@@ -1426,3 +1455,5 @@ python Dashboard.start()
 # Local Variables:
 # mode: python
 # End:
+
+source /home/meixihua/.vim/bundle/minimal_gdb/dbg_data/min_settings.gdb
